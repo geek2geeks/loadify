@@ -22,12 +22,13 @@ def upload():
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
             if filename.rsplit('.', 1)[1].lower() == 'docx':
-                convert(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                convert(file_path)
                 filename = filename.rsplit('.', 1)[0] + '.pdf'
             elif filename.rsplit('.', 1)[1].lower() == 'ppt':
-                convert_ppt_to_pdf(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                convert_ppt_to_pdf(file_path)
                 filename = filename.rsplit('.', 1)[0] + '.pdf'
             return redirect(url_for('uploaded_file', filename=filename))
     return render_template_string(open("templates/upload.html").read())
