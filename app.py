@@ -1,6 +1,8 @@
-from flask import Flask, request, redirect, url_for, render_template_string, send_from_directory
 from werkzeug.utils import secure_filename
+from flask import Flask, request, redirect, url_for, send_from_directory, render_template_string
 import os
+from docx2pdf import convert
+from ppt2pdf import convert_ppt_to_pdf
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'  # specify your upload folder
@@ -21,6 +23,12 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if filename.rsplit('.', 1)[1].lower() == 'docx':
+                convert(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                filename = filename.rsplit('.', 1)[0] + '.pdf'
+            elif filename.rsplit('.', 1)[1].lower() == 'ppt':
+                convert_ppt_to_pdf(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                filename = filename.rsplit('.', 1)[0] + '.pdf'
             return redirect(url_for('uploaded_file', filename=filename))
     return render_template_string(open("templates/upload.html").read())
 
