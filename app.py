@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, url_for, render_template_string
+from flask import Flask, request, redirect, url_for, render_template_string, send_from_directory
 from werkzeug.utils import secure_filename
 import os
 
@@ -21,8 +21,12 @@ def upload():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('upload'))
+            return redirect(url_for('uploaded_file', filename=filename))
     return render_template_string(open("templates/upload.html").read())
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -11,5 +11,12 @@
         <input type="file" name="file" multiple>
         <input type="submit" value="Upload">
     </form>
+    {% if filename %}
+        {% if filename.endswith('.jpg') %}
+            <img src="/uploads/{{ filename }}" alt="Uploaded Image">
+        {% elif filename.endswith('.pdf') %}
+            <embed src="/uploads/{{ filename }}" type="application/pdf" width="600" height="500">
+        {% endif %}
+    {% endif %}
 </body>
 </html>
