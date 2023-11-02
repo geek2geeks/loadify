@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+    <form id="upload-form" enctype="multipart/form-data">
         <input type="file" name="file" multiple>
         <input type="submit" value="Upload">
     </form>
@@ -24,7 +24,7 @@
             .then(data => {
                 var output = document.getElementById('output');
                 var newElement;
-                if (data.filename.endsWith('.jpg')) {
+                if (data.filename.endsWith('.jpg') || data.filename.endsWith('.png')) {
                     newElement = document.createElement('img');
                     newElement.src = '/uploads/' + data.filename;
                     newElement.alt = 'Uploaded Image';
