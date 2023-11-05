@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <title>Home Page</title>
+</head>
+<body>
+<div class="container">
+    <h1>Welcome to Loadify</h1>
+    <div class="button-group mt-3">
+        <a href="{{ url_for('auth.login') }}" class="btn btn-custom">Login</a>
+        <a href="{{ url_for('auth.register') }}" class="btn btn-secondary">Register</a>
+    </div>
+</div>
+</body>
+</html>
