@@ -1,0 +1,28 @@
+# Byte-compiled / cached files
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local virtual environments
+env/
+.venv/
+venv/
+
+# Local configuration and secrets
+.env
+.env.*
+
+# Runtime data (the SQLite database is generated at runtime)
+instance/
+*.db
+*.sqlite3
+
+# Uploaded user files
+static/uploads/
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
