@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  python-checks:
+    name: Python install, compile and smoke checks
+    runs-on: [self-hosted, Windows, X64, loadify]
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check --no-input -r requirements.txt
+      - name: Check dependency consistency
+        run: python -m pip check
+      - name: Byte-compile sources
+        run: python -m compileall -q app.py config.py models.py views
+      - name: Verify application import and routes
+        run: python -m flask --app app routes
+      - name: HTTP smoke test (GET /)
+        run: |
+          python -c "from app import app; client = app.test_client(); response = client.get('/'); assert response.status_code == 200, response.status_code; print('GET / ->', response.status_code)"
